@@ -1,6 +1,9 @@
 # reconocedor_perros_vs_gatos
 
-## Para correr el proyecto usar el siguiente comando en la ruta inicial del proyecto:
+## Ejecutar en la raiz del proyecto para instalar dependencias.
+`npm install`
+
+## Para correr el proyecto se usa el comando
 `npm start`
 
 Luego ingresar a
