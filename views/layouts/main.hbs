@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <title>IDE APP</title>
+</head>
+<header>
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img src="/img/icon.webp" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+        Reconocedor de perros y gatos
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {{activeImg}}" href="/">Imagen</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{activeVideo}}" href="/video">Video Cámara</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<body>
+
+  <div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container top-0 end-0 p-3">
+
+      <div id="liveToast" class="toast align-items-center text-bg-secondary border-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            Cargando Modelo...
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+        </div>
+      </div>
+
+      <div id="liveToast2" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive"
+        aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            Modelo cargado
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container p-5">
+    <div class="row">
+      {{{ body }}}
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+<script src="js/common.js" type="module"></script>
+
+{{#if activeImg}}
+<script src="js/imagen.js" type="module"></script>
+{{/if}}
+
+{{#if activeVideo}}
+<script src="js/video.js" type="module"></script>
+{{/if}}
+
+</html>

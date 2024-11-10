@@ -1,0 +1,28 @@
+<div class="col-sm-6 offset-sm-3">
+
+  <div class="card">
+    <div class="card-header text-bg-dark">
+      <span class="card-title">Imagen</span>
+    </div>
+    <div class="card-body">
+      <form id="form">
+        <div class="form-group mb-3">
+          <input type="file" class="form-control" id="imageInput">
+        </div>
+        <div class="form-group mb-3">
+          <img draggable="false" src="img/animal.webp" id="preview" class="rounded mx-auto d-block" height="270px"
+            width="270px" style="object-fit: contain" alt="Imagen Previsualización">
+        </div>
+
+        <canvas id="canvas" width="400" height="400" style="max-width: 100%; display: none"></canvas>
+        <canvas id="otrocanvas" width="150" height="150" style="display: none"></canvas>
+
+        <div class="form-group d-grid gap-2">
+          <button id="btn" disabled class="btn btn-primary btn-block" type="button">Reconocer</button>
+        </div>
+      </form>
+      <h2 id="resultado" class="text-center mt-2"></h2>
+    </div>
+  </div>
+
+</div>

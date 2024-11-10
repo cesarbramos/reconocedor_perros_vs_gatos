@@ -105,8 +105,7 @@ data_gen_entrenamiento = datagen.flow(x_entrenamiento, y_entrenamiento, batch_si
 tensorboardCNN = TensorBoard(log_dir='logs/cnn')
 gc.collect()
 
-with tf.device('/device:XLA_GPU:0'):
-    modeloCNN.fit(
+modeloCNN.fit(
         data_gen_entrenamiento,
         epochs=125,
         validation_data=(x_validacion, y_validacion),

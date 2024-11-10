@@ -1,4 +1,4 @@
-import { predecir, canvas, otrocanvas, ctx, tamano, resultadoElement } from "./common.js";
+import { recognize, canvas, resultadoElement } from "./common.js";
 
 const imageInput = document.getElementById('imageInput');
 const previewImage = document.getElementById('preview');
@@ -9,26 +9,26 @@ form.onsubmit = (e) => {
     e.preventDefault();
 }
 
-btn.onclick = (e) => {
-    predecir(canvas, otrocanvas);
+btn.onclick = () => {
+    recognize();
 }
 
 const drawImageScaled = (img, ctx) => {
     const cvParent = ctx.canvas;
-    var hRatio = cvParent.width / img.width;
-    var vRatio = cvParent.height / img.height;
-    var ratio = Math.min(hRatio, vRatio);
-    var centerShift_x = (cvParent.width - img.width * ratio) / 2;
-    var centerShift_y = (cvParent.height - img.height * ratio) / 2;
+    let hRatio = cvParent.width / img.width;
+    let vRatio = cvParent.height / img.height;
+    let ratio = Math.min(hRatio, vRatio);
+    let centerShift_x = (cvParent.width - img.width * ratio) / 2;
+    let centerShift_y = (cvParent.height - img.height * ratio) / 2;
     ctx.clearRect(0, 0, cvParent.width, cvParent.height);
     ctx.drawImage(img, 0, 0, img.width, img.height,
         centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
 }
 
-imageInput.addEventListener('change', function (event) {
+imageInput.onchange = (event) => {
     resultadoElement.innerHTML = '';
     const file = event.target.files[0];
-    console.log('change');
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -43,4 +43,4 @@ imageInput.addEventListener('change', function (event) {
         };
     };
     reader.readAsDataURL(file);
-});
+}

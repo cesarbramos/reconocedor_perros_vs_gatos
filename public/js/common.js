@@ -1,37 +1,42 @@
 export const canvas = document.getElementById("canvas");
 export const otrocanvas = document.getElementById("otrocanvas");
 export const resultadoElement = document.getElementById("resultado");
-export const ctx = canvas.getContext("2d");
+export const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
-export const tamano = 400;
+const toastLive = document.getElementById('liveToast')
+const toastLive2 = document.getElementById('liveToast2')
+
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLive)
+const toastBootstrap2 = bootstrap.Toast.getOrCreateInstance(toastLive2)
+
+export const SIZE = 400;
 
 (async() => {
-  console.log("Cargando modelo...");
+  toastBootstrap.show()
   modelo = await tf.loadLayersModel("model/model.json");
-  console.log("Modelo cargado");
+  toastBootstrap2.show()
 })();
 
 export var modelo = null;
 
-export const predecir = (isStream) => {
+export const recognize = (isStream) => {
     if (modelo != null) {
       reescale(canvas, 100, 100, otrocanvas);
   
-      //Hacer la predicción
-      var ctx2 = otrocanvas.getContext("2d");
-      var imgData = ctx2.getImageData(0,0, 100, 100);
+      let ctx2 = otrocanvas.getContext("2d", { willReadFrequently: true });
+      let imgData = ctx2.getImageData(0,0, 100, 100);
   
-      var arr = [];
-      var arr100 = [];
+      let arr = [];
+      let arr100 = [];
   
-      for (var p=0; p < imgData.data.length; p+= 4) {
-        var rojo = imgData.data[p] / 255;
-        var verde = imgData.data[p+1] / 255;
-        var azul = imgData.data[p+2] / 255;
+      for (let p=0; p < imgData.data.length; p+= 4) {
+        let red = imgData.data[p] / 255;
+        let green = imgData.data[p+1] / 255;
+        let blue = imgData.data[p+2] / 255;
   
-        var gris = (rojo+verde+azul)/3;
+        let gray = (red+green+blue)/3;
   
-        arr100.push([gris]);
+        arr100.push([gray]);
         if (arr100.length == 100) {
           arr.push(arr100);
           arr100 = [];
@@ -40,31 +45,23 @@ export const predecir = (isStream) => {
   
       arr = [arr];
   
-      var tensor = tf.tensor4d(arr);
-      var resultado = modelo.predict(tensor).dataSync();
-  
-      var respuesta;
-      if (resultado <= .5) {
-        respuesta = "Gato";
-      } else {
-        respuesta = "Perro";
-      }
-      resultadoElement.innerHTML = respuesta;
-  
+      let tensor = tf.tensor4d(arr);
+      let resultado = modelo.predict(tensor).dataSync();
+      resultadoElement.innerHTML = (resultado <= .5) ? 'Gato' : 'Perro';
     }
   
     if (isStream)
-        setTimeout(predecir, 150);
+      setTimeout(() => recognize(isStream), 150);
 }
 
 /**
-   * Hermite resize - fast image resize/resample using Hermite filter. 1 cpu version!
+   * Reescala el canvas a otro más pequeño ajustandolo para coincidir con el tamaño en el que entrenó el modelo 100, 100, 1
+   * Es decir 100 x 100 a un canal de color (gris)
    * 
    * @param {HtmlElement} canvas
    * @param {int} width
    * @param {int} height
-   * @param {boolean} resize_canvas if true, canvas will be resized. Optional.
-   * Cambiado por RT, resize canvas ahora es donde se pone el chiqitillllllo
+   * @param {boolean} resize_canvas si es true, el canvas será reescalado.
    */
 export function reescale(canvas, width, height, resize_canvas) {
     var width_source = canvas.width;
@@ -77,8 +74,8 @@ export function reescale(canvas, width, height, resize_canvas) {
     var ratio_w_half = Math.ceil(ratio_w / 2);
     var ratio_h_half = Math.ceil(ratio_h / 2);
 
-    var ctx = canvas.getContext("2d");
-    var ctx2 = resize_canvas.getContext("2d");
+    var ctx = canvas.getContext("2d", { willReadFrequently: true });
+    var ctx2 = resize_canvas.getContext("2d", { willReadFrequently: true });
     var img = ctx.getImageData(0, 0, width_source, height_source);
     var img2 = ctx2.createImageData(width, height);
     var data = img.data;
